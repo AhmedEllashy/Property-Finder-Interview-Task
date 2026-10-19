@@ -8,9 +8,17 @@ import SwiftUI
 struct TahuduTabView: View {
     @State private var selectedTab = Tabs.search.rawValue
 
+    @State private var searchViewModel: SearchViewModel
+
+    init() {
+        let useCase = DIContainer.shared.resolve(SearchUseCaseProtocol.self)
+        let favouritesUseCase = DIContainer.shared.resolve(FavouritesUseCaseProtocol.self)
+        _searchViewModel = State(initialValue: SearchViewModel(useCase: useCase, favouritesUseCase: favouritesUseCase))
+    }
+    
     var body: some View {
         TabView(selection: $selectedTab) {
-            SearchView()
+            SearchView(viewModel: searchViewModel)
                 .tag(Tabs.search.rawValue)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")

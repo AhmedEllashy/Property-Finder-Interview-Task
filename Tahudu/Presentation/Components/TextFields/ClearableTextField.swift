@@ -7,8 +7,8 @@ import SwiftUI
 
 struct ClearableTextFieldStyle: TextFieldStyle {
     @Binding var text: String
-    var symbol: String?
     @Binding var focused: Bool
+    var symbol: String?
 
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
@@ -23,9 +23,9 @@ struct ClearableTextFieldStyle: TextFieldStyle {
 struct ClearableTextField: View {
     @State private var editing = false
 
+    @Binding var text: String
     let label: String
     let symbol: String?
-    @Binding var text: String
     var onEditingChanged: ((Bool) -> Void)?
 
     var body: some View {
@@ -33,7 +33,7 @@ struct ClearableTextField: View {
             self.editing = edit
             onEditingChanged?(edit)
         })
-            .textFieldStyle(ClearableTextFieldStyle(text: $text, symbol: symbol, focused: $editing))
+        .textFieldStyle(ClearableTextFieldStyle(text: $text, focused: $editing, symbol: symbol))
     }
 
     init(label: String,
